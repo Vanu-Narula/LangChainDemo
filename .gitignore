@@ -129,6 +129,7 @@ ENV/
 env.bak/
 venv.bak/
 langChain/
+langChainenv/
 .chroma/
 
 # Spyder project settings
@@ -163,3 +164,6 @@ cython_debug/
 #.idea/
 
 .DS_Store
+
+# PDF files
+.pdf

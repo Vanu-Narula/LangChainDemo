@@ -24,13 +24,13 @@ def main():
         # split into chuncks
         text_splitter = CharacterTextSplitter(
             separator="\n",
-            chunk_size=100,
-            chunk_overlap=20,
+            chunk_size=1000,
+            chunk_overlap=200,
             length_function=len
         )
         
         chunks = text_splitter.split_text(text)
-        # st.write(chunks)
+        st.write(chunks)
         
         # create embeddings
         embeddings = OpenAIEmbeddings()
