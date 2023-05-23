@@ -36,13 +36,14 @@ def main():
         # st.write(chunks)
         
         # create embeddings
-        embeddings = OpenAIEmbeddings()
-        with get_openai_callback() as cb: 
+        
+        with get_openai_callback() as cb:
+            embeddings = OpenAIEmbeddings()
             knowledge_base = FAISS.from_texts(chunks, embeddings)
 
             user_question = st.text_input("Ask your question about PDF:")
 
-            chain = load_qa_chain(OpenAI(), 
+            chain = load_qa_chain(OpenAI(model_name="gpt-3.5-turbo"), 
                       chain_type="stuff") # we are going to stuff all the docs in at once
             if user_question:
                 docs = knowledge_base.similarity_search(user_question)
