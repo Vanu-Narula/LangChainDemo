@@ -166,4 +166,4 @@ cython_debug/
 .DS_Store
 
 # PDF files
-.pdf
+*.pdf
