@@ -11,8 +11,8 @@ def main():
     load_dotenv()
 
     # App framework
+    st.set_page_config(page_title="🦜🔗 Article generator using OpenAI")
     st.header("🦜🔗 Article generator using OpenAI")
-    st.title('🦜🔗 Article generator using OpenAI')
     prompt = st.text_input('Plug in your topic here')
 
     title_template = PromptTemplate(
