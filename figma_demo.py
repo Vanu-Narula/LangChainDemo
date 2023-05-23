@@ -43,7 +43,7 @@ def generate_code(human_input):
     system_message_prompt = SystemMessagePromptTemplate.from_template(system_prompt_template)
     human_message_prompt = HumanMessagePromptTemplate.from_template(human_prompt_template)
 
-    gpt_4 = ChatOpenAI(temperature=.02)
+    gpt_4 = ChatOpenAI(temperature=.02, model_name="gpt-3.5-turbo")
     # Use the retriever's 'get_relevant_documents' method if needed to filter down longer docs
     relevant_nodes = figma_doc_retriever.get_relevant_documents(human_input)
     conversation = [system_message_prompt, human_message_prompt]
