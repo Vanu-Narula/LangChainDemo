@@ -22,7 +22,7 @@ def main():
 
     article_template = PromptTemplate(
         input_variables= ['title', 'wiki_research'],
-        template='Your are expert technology article writer, write an article for Medium platform \
+        template='Your are expert technology article writer, write an article for blog \
             on the title {title}. Use this wikipedia reserach while writing the article, RESEARCH: {wiki_research}'
     )
 
@@ -31,7 +31,7 @@ def main():
     article_memory = ConversationBufferMemory(input_key='title', memory_key='chat_history')
 
     #LLM
-    llm = OpenAI(temperature=0.9)
+    llm = OpenAI(temperature=0.9, model_name="gpt-3.5-turbo")
     title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', memory=title_memory)
     article_chain = LLMChain(llm=llm, prompt=article_template, verbose=True, output_key='article', memory=article_memory)
     
@@ -45,6 +45,7 @@ def main():
         title = title_chain.run(prompt)
         wiki_research = wiki.run(prompt)
         article = article_chain.run(title=title, wiki_research= wiki_research)
+        title = "Title: " + title
 
         st.write(title)
         st.write(article)
