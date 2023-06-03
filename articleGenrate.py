@@ -3,9 +3,10 @@ from dotenv import load_dotenv
 import streamlit as st
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain, SequentialChain
+from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
 from langchain.utilities import WikipediaAPIWrapper
+from langchain.callbacks import get_openai_callback
 
 def main():
     load_dotenv()
@@ -17,13 +18,13 @@ def main():
 
     title_template = PromptTemplate(
         input_variables= ['topic'],
-        template='Your are expert title writer, write a short, clickbait and catchy title about {topic}'
+        template='Your are expert tutorial title writer, write a short and catchy title about {topic}. The title should represent '
     )
 
     article_template = PromptTemplate(
         input_variables= ['title', 'wiki_research'],
-        template='Your are expert technology article writer, write an article for blog \
-            on the title {title}. Use this wikipedia reserach while writing the article, RESEARCH: {wiki_research}'
+        template='Your are expert tutorial writer, write an article in form of a detailed tutorial which includes extensive code examples and image urls (if required) for blog \
+            on the title {title}. Use this wikipedia research while writing the article, RESEARCH: {wiki_research}'
     )
 
     # Memory
@@ -31,7 +32,7 @@ def main():
     article_memory = ConversationBufferMemory(input_key='title', memory_key='chat_history')
 
     #LLM
-    llm = OpenAI(temperature=0.9, model_name="gpt-3.5-turbo")
+    llm = OpenAI(temperature=0.9, model_name="gpt-3.5-turbo", max_tokens=2500)
     title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', memory=title_memory)
     article_chain = LLMChain(llm=llm, prompt=article_template, verbose=True, output_key='article', memory=article_memory)
     
@@ -42,9 +43,12 @@ def main():
 
     # Show st
     if prompt:
-        title = title_chain.run(prompt)
-        wiki_research = wiki.run(prompt)
-        article = article_chain.run(title=title, wiki_research= wiki_research)
+        with get_openai_callback() as cb:
+            title = title_chain.run(prompt)
+            wiki_research = wiki.run(prompt)
+            article = article_chain.run(title=title, wiki_research= wiki_research)
+            with st.expander('LLM Call Usage'):
+                    st.info(cb)
         title = "Title: " + title
 
         st.write(title)
