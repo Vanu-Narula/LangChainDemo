@@ -23,8 +23,9 @@ def main():
 
     article_template = PromptTemplate(
         input_variables= ['title', 'wiki_research'],
-        template='Your are expert tutorial writer, write an article in form of a detailed tutorial which includes extensive code examples and image urls (if required) for blog \
-            on the title {title}. Use this wikipedia research while writing the article, RESEARCH: {wiki_research}'
+        template='Your are expert tutorial writer, write an article in form of a detailed tutorial which includes extensive \
+            code examples and image urls (if required) for blog on the title {title}. Use this wikipedia research while \
+                writing the article, RESEARCH: {wiki_research}'
     )
 
     # Memory
