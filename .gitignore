@@ -132,6 +132,7 @@ venv.bak/
 langChain/
 langChainenv/
 .chroma/
+*.zip
 
 # Spyder project settings
 .spyderproject
